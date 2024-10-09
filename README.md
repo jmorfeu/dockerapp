@@ -29,5 +29,53 @@ EXPOSE 3000
 
 # Comando para iniciar la aplicación
 CMD ["npm", "start"]
+```
+## Crear un archivo `.dockerignore`
+Para evitar copiar archivos innecesarios al contenedor, crea un archivo .dockerignore en la raíz del proyecto.
 
+Ejemplo de un .dockerignore básico:
+```bash
+node_modules
+npm-debug.log
+.env
+```
 
+## Construir la imagen de Docker
+Para construir la imagen de Docker, abre una terminal en la raíz de tu proyecto y ejecuta el siguiente comando:
+
+```bash
+docker build -t nombre-de-la-imagen .
+```
+Nota: Reemplaza `nombre-de-la-imagen` con el nombre que deseas darle a tu imagen Docker.
+
+## Ejecutar el contenedor
+Una vez que la imagen esté construida, puedes ejecutar un contenedor basado en la imagen utilizando el siguiente comando:
+
+```bash
+docker run -p 3000:3000 nombre-de-la-imagen
+```
+Esto ejecutará la aplicación en el puerto 3000. Puedes acceder a tu aplicación desde el navegador en `http://localhost:3000`.
+
+# Opcional: Crear un docker-compose.yml
+Si tu aplicación tiene dependencias adicionales (como una base de datos), puedes utilizar Docker Compose para administrar los contenedores. Crea un archivo `docker-compose.yml` en la raíz de tu proyecto.
+
+Ejemplo de `docker-compose.yml`:
+
+```yaml
+version: '3'
+services:
+  webapp:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/usr/src/app
+    command: npm start
+```
+Ejecutar con Docker Compose
+Con el archivo `docker-compose.yml` configurado, puedes iniciar tu aplicación y sus dependencias con el siguiente comando:
+
+```bash
+docker-compose up
+```
+Esto levantará todos los servicios definidos en el archivo `docker-compose.yml`.
